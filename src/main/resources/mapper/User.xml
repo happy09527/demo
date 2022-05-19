@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>     <!--用于动态sql-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.user.mapper.UserMapper">
+    <update id="update">   <!--id为UserMapper中的方法名-->
+        update user
+        <set>            <!--当输入的字段全不为空才执行-->
+            <if test="password != null ">
+                password =#{password},
+            </if>
+            <if test="power != null ">
+                power =#{power},
+            </if>
+            <if test="phone != null ">
+                phone= #{phone},
+            </if>
+            <if test="email != null ">
+                email= #{email}
+            </if>
+        </set>
+        <where>
+            username = #{username}
+        </where>
+    </update>
+    <select id="networkSearch" resultType="java.util.HashMap">
+        select * from network where
+        <choose>
+            <when test="name !=null and name!=''">
+                <bind name="name" value="'%' + name + '%'"/>
+                name like #{name}
+            </when>
+            <when test="address !=null and address!=''">
+                <bind name="address" value="'%' + address + '%'"/>
+                address like #{address}
+            </when>
+            <when test="company !=null and company!=''">
+                <bind name="company" value="'%' + company + '%'"/>
+                company like #{company}
+            </when>
+            <when test="phone !=null and phone!=''">
+                <bind name="phone" value="'%' + phone + '%'"/>
+                phone like #{phone}
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+        and cid=#{cid}
+    </select>
+    <select id="deviceSearch" resultType="java.util.HashMap">
+        select * from device where
+        <choose>
+            <when test="kind !=null and kind!=''">
+                <bind name="kind" value="'%' + kind + '%'"/>
+                kind like #{kind}
+            </when>
+            <when test="name !=null and name!=''">
+                <bind name="name" value="'%' + name + '%'"/>
+                name like #{name}
+            </when>
+            <when test="network_id !=null and network_id!=''">
+                <bind name="network_id" value="'%' + network_id + '%'"/>
+                network_id like #{network_id}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+        and cid = #{cid}
+    </select>
+    <select id="memberSearch" resultType="java.util.HashMap">
+        select * from member where
+        <choose>
+            <when test="name !=null and name!=''">
+                <bind name="name" value="'%' + name + '%'"/>
+                name like #{name}
+            </when>
+            <when test="phone !=null and phone!=''">
+                <bind name="phone" value="'%' + phone + '%'"/>
+                phone like #{phone}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+        and cid = #{cid}
+    </select>
+    <select id="dealSearch" resultType="java.util.HashMap">
+        select * from deal where
+        <choose>
+            <when test="device_id !=null and device_id!=''">
+                <bind name="device_id" value="'%' + device_id + '%'"/>
+                device_id like #{device_id}
+            </when>
+            <when test="member_id !=null and member_id!=''">
+                <bind name="member_id" value="'%' + member_id + '%'"/>
+                member_id like #{member_id}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+        and cid = #{cid}
+    </select>
+    <select id="rechargeSearch" resultType="java.util.HashMap">
+        select * from recharge where
+        <choose>
+            <when test="member_id !=null and member_id!=''">
+                <bind name="member_id" value="'%' + member_id + '%'"/>
+                member_id like #{member_id}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+        and cid =#{cid}
+    </select>
+  <!--  <update id="memberUpdate">
+        update member set
+            <if test="name!=null and name!=''">name=#{name},</if>
+            <if test="money!=null and money!=''" >money=#{money},</if>
+            <if test="phone!=null and phone!=''">phone=#{phone}</if>
+        <where>
+            id = #{id}
+        </where>
+    </update>  -->
+    <select id="logSearch" resultType="java.util.HashMap">
+        select * from log where
+        <choose>
+            <when test="type !=null and type!=''">
+                <bind name="type" value="'%' + type + '%'"/>
+                type like #{type}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+        and cid =#{cid}
+    </select>
+</mapper>
